@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prxttysiren - Top Gifter Overlay</title>
+  <style>
+    :root {
+      --pink-1: rgba(255, 223, 236, 0.88);
+      --pink-2: rgba(255, 193, 218, 0.92);
+      --pink-3: rgba(255, 146, 194, 0.95);
+      --pink-4: #ff6faa;
+      --pink-5: #ff4f98;
+      --white-soft: rgba(255, 255, 255, 0.95);
+      --glow: 0 0 12px rgba(255, 177, 210, 0.45);
+      --shadow: 0 10px 30px rgba(255, 120, 170, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      overflow: hidden;
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+    }
+
+    body {
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-end;
+      padding: 24px;
+    }
+
+    .overlay {
+      position: relative;
+      width: 340px;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,0.22), transparent 30%),
+        linear-gradient(180deg, var(--pink-1), var(--pink-2));
+      border: 2px solid rgba(255,255,255,0.7);
+      border-radius: 26px;
+      box-shadow: var(--shadow), var(--glow);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      padding: 18px 18px 16px;
+      overflow: hidden;
+    }
+
+    .overlay::before,
+    .overlay::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      border-radius: 26px;
+    }
+
+    .overlay::before {
+      background:
+        radial-gradient(circle at 15% 18%, rgba(255,255,255,0.85) 0 2px, transparent 3px),
+        radial-gradient(circle at 85% 15%, rgba(255,255,255,0.8) 0 2px, transparent 3px),
+        radial-gradient(circle at 22% 78%, rgba(255,255,255,0.75) 0 2px, transparent 3px),
+        radial-gradient(circle at 78% 72%, rgba(255,255,255,0.7) 0 2px, transparent 3px),
+        radial-gradient(circle at 50% 45%, rgba(255,255,255,0.45) 0 1.5px, transparent 3px);
+      opacity: 0.9;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .title-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,235,244,0.88));
+      border: 2px solid rgba(255,255,255,0.78);
+      border-radius: 999px;
+      padding: 10px 16px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), var(--glow);
+    }
+
+    .title-icon {
+      font-size: 18px;
+      line-height: 1;
+      filter: drop-shadow(0 0 8px rgba(255,255,255,0.55));
+    }
+
+    .title-text {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--pink-5);
+      letter-spacing: 0.4px;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+    }
+
+    .badge {
+      background: rgba(255,255,255,0.8);
+      border: 1.5px solid rgba(255,255,255,0.75);
+      color: var(--pink-4);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      box-shadow: var(--glow);
+      white-space: nowrap;
+    }
+
+    .gifter-card {
+      position: relative;
+      background: linear-gradient(180deg, rgba(255,255,255,0.94), rgba(255,239,246,0.92));
+      border: 2px solid rgba(255,255,255,0.82);
+      border-radius: 22px;
+      padding: 18px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), var(--shadow);
+    }
+
+    .gifter-card::after {
+      content: "";
+      position: absolute;
+      top: 12px;
+      right: 14px;
+      width: 10px;
+      height: 10px;
+      background: rgba(255, 121, 176, 0.9);
+      border-radius: 50%;
+      box-shadow:
+        0 0 0 4px rgba(255, 160, 202, 0.18),
+        0 0 12px rgba(255, 105, 170, 0.55);
+    }
+
+    .label {
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: #ff7caf;
+      margin-bottom: 8px;
+    }
+
+    .gifter-name {
+      font-size: 30px;
+      font-weight: 900;
+      color: var(--pink-5);
+      line-height: 1.05;
+      margin: 0 0 10px;
+      word-break: break-word;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.45);
+    }
+
+    .gifter-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .gift-count,
+    .gift-type {
+      background: rgba(255, 207, 225, 0.45);
+      border: 1.5px solid rgba(255,255,255,0.85);
+      border-radius: 14px;
+      padding: 8px 12px;
+      color: #ff5f9e;
+      font-size: 15px;
+      font-weight: 800;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+    }
+
+    .footer {
+      margin-top: 12px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: #ff76ab;
+      opacity: 0.95;
+    }
+
+    .tiny-hearts {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .heart {
+      position: absolute;
+      color: rgba(255,255,255,0.72);
+      font-size: 16px;
+      animation: floatUp linear infinite;
+      opacity: 0.75;
+    }
+
+    @keyframes floatUp {
+      from {
+        transform: translateY(12px);
+        opacity: 0;
+      }
+      20% {
+        opacity: 0.7;
+      }
+      to {
+        transform: translateY(-30px);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <div class="tiny-hearts" id="hearts"></div>
+
+    <div class="header">
+      <div class="title-pill">
+        <span class="title-icon">🎁</span>
+        <span class="title-text">Top Gifter</span>
+      </div>
+      <div class="badge">Prxttysiren</div>
+    </div>
+
+    <div class="gifter-card">
+      <div class="label">Current Leader</div>
+      <h1 class="gifter-name" id="gifterName">No gifts yet</h1>
+
+      <div class="gifter-row">
+        <div class="gift-count" id="giftCount">0 gifts</div>
+        <div class="gift-type" id="giftType">Waiting...</div>
+      </div>
+    </div>
+
+    <div class="footer" id="updatedText">Listening for live updates...</div>
+  </div>
+
+  <script>
+    const gifterNameEl = document.getElementById("gifterName");
+    const giftCountEl = document.getElementById("giftCount");
+    const giftTypeEl = document.getElementById("giftType");
+    const updatedTextEl = document.getElementById("updatedText");
+    const heartsEl = document.getElementById("hearts");
+
+    // Keeps track of total gift value/count by user
+    const totals = new Map();
+    let currentTop = {
+      name: "No gifts yet",
+      total: 0,
+      giftType: "Waiting..."
+    };
+
+    function updateOverlay(name, total, giftType = "Gift") {
+      gifterNameEl.textContent = name || "No gifts yet";
+      giftCountEl.textContent = `${total || 0} gifts`;
+      giftTypeEl.textContent = giftType || "Gift";
+      updatedTextEl.textContent = `Updated: ${new Date().toLocaleTimeString()}`;
+    }
+
+    function processGiftEvent(data) {
+      // expected shape:
+      // { name: "username", amount: 5, giftType: "Rose" }
+
+      if (!data || !data.name) return;
+
+      const amount = Number(data.amount) || 1;
+      const existing = totals.get(data.name) || { total: 0, giftType: data.giftType || "Gift" };
+      const nextTotal = existing.total + amount;
+
+      totals.set(data.name, {
+        total: nextTotal,
+        giftType: data.giftType || existing.giftType || "Gift"
+      });
+
+      if (nextTotal > currentTop.total) {
+        currentTop = {
+          name: data.name,
+          total: nextTotal,
+          giftType: data.giftType || "Gift"
+        };
+        updateOverlay(currentTop.name, currentTop.total, currentTop.giftType);
+      }
+    }
+
+    // OPTIONAL: connect this to your local websocket source
+    // Example if you use a local relay or TikFinity/Streamer.bot bridge
+    // Change the URL below to match your setup.
+    const WEBSOCKET_URL = "ws://localhost:8080";
+
+    function connectWebSocket() {
+      try {
+        const socket = new WebSocket(WEBSOCKET_URL);
+
+        socket.addEventListener("open", () => {
+          updatedTextEl.textContent = "Connected to live gift feed";
+        });
+
+        socket.addEventListener("message", (event) => {
+          try {
+            const data = JSON.parse(event.data);
+
+            // Example supported message formats:
+            // { type: "gift", name: "ShawtyFan", amount: 3, giftType: "Rose" }
+            // { event: "gift", user: "ShawtyFan", count: 3, gift: "Rose" }
+
+            if (data.type === "gift") {
+              processGiftEvent({
+                name: data.name,
+                amount: data.amount,
+                giftType: data.giftType
+              });
+            } else if (data.event === "gift") {
+              processGiftEvent({
+                name: data.user,
+                amount: data.count,
+                giftType: data.gift
+              });
+            }
+          } catch (err) {
+            console.error("Invalid message:", err);
+          }
+        });
+
+        socket.addEventListener("close", () => {
+          updatedTextEl.textContent = "Disconnected. Reconnecting...";
+          setTimeout(connectWebSocket, 3000);
+        });
+
+        socket.addEventListener("error", () => {
+          socket.close();
+        });
+      } catch (err) {
+        updatedTextEl.textContent = "Live connection not found";
+      }
+    }
+
+    // For easy manual testing from browser console:
+    // window.setTopGifter("Username", 10, "Rose");
+    window.setTopGifter = function(name, total, giftType = "Gift") {
+      currentTop = { name, total, giftType };
+      updateOverlay(name, total, giftType);
+    };
+
+    // For testing gift events:
+    // window.fakeGift("Username", 2, "Rose");
+    window.fakeGift = function(name, amount = 1, giftType = "Gift") {
+      processGiftEvent({ name, amount, giftType });
+    };
+
+    function spawnHearts() {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.textContent = Math.random() > 0.5 ? "♡" : "✦";
+      heart.style.left = `${8 + Math.random() * 84}%`;
+      heart.style.top = `${75 + Math.random() * 20}%`;
+      heart.style.animationDuration = `${3 + Math.random() * 3}s`;
+      heart.style.fontSize = `${12 + Math.random() * 10}px`;
+      heartsEl.appendChild(heart);
+
+      setTimeout(() => heart.remove(), 6000);
+    }
+
+    setInterval(spawnHearts, 900);
+
+    updateOverlay(currentTop.name, currentTop.total, currentTop.giftType);
+    connectWebSocket();
+  </script>
+</body>
+</html>
